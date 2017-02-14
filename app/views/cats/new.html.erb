@@ -1,0 +1,34 @@
+<form action="<%=cats_url%>" method="post">
+  Name
+  <br>
+  <input type="text" name="Name" value="">
+  <br>
+  <br>
+    <label for="sex_button">
+      Sex<br>
+      M<input type="radio" name="Sex" value="M">
+      F<input type="radio" name="Sex" value="F">
+    </label>
+    <br>
+    <br>
+    Color
+    <br>
+    <select name="Color">
+      <option disabled selected="">-- Please choose a color --</option>
+      <option value="black">black</option>
+      <option value="white">white</option>
+      <option value="orange">orange</option>
+      <option value="calico">calico</option>
+      <option value="grey">grey</option>
+    </select>
+    <br>
+    <br>
+    Date of Birth
+    <br>
+    <input type="date" name="Birth-Date" value="">
+    <br>
+    <br>
+    Description
+    <br>
+    <textarea name="Description" rows="6" cols="40"></textarea>
+</form>
