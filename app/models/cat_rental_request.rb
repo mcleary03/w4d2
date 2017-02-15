@@ -19,12 +19,14 @@ class CatRentalRequest < ActiveRecord::Base
   def overlapping_requests
     rentals = CatRentalRequest.where(cat_id: self.cat_id)
     rentals.map do |rental|
-      rental.start_date.between?(self.start_date, self.end_date) || rental.end_date.between?(self.start_date, self.end_date)
+      self if rental.start_date.between?(self.start_date, self.end_date) ||
+                rental.end_date.between?(self.start_date, self.end_date)
     end
   end
 
   def overlapping_approved_requests
     overlapping_requests.each do |request|
+      break if request.nil?
       if self.status == 'APPROVED' && request.status == 'APPROVED'
         self.errors[:status] << "overlapping requests"
       end
