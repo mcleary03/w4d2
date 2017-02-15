@@ -19,7 +19,7 @@ class CatRentalRequest < ActiveRecord::Base
   def overlapping_requests
     rentals = CatRentalRequest.where(cat_id: self.cat_id)
     rentals.map do |rental|
-      self if rental.start_date.between?(self.start_date, self.end_date) ||
+      rental if rental.start_date.between?(self.start_date, self.end_date) ||
                 rental.end_date.between?(self.start_date, self.end_date)
     end
   end
@@ -31,5 +31,27 @@ class CatRentalRequest < ActiveRecord::Base
         self.errors[:status] << "overlapping requests"
       end
     end
+  end
+
+  def overlapping_pending_requests
+    overlapping_requests.each do |request|
+      break if request.nil?
+      request.deny! if request.status == 'PENDING'
+    end
+  end
+
+  def approve!
+    status = self.status
+    obj = self
+    CatRentalRequest.transaction do
+      obj.status = 'APPROVED'
+      obj.save!
+    end
+    debugger
+    overlapping_pending_requests
+  end
+
+  def deny!
+    status = 'DENIED'
   end
 end
